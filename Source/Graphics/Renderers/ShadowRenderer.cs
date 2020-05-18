@@ -172,13 +172,13 @@ namespace Penumbra.Graphics.Renderers
 
                 Polygon points = hull.WorldPoints;
 
-                Vector2 prevPoint = points[points.Count - 1];
+                Vector2 prevPoint = points.Items[points.Count - 1];
 
                 int pointCount = points.Count;
                 numSegments += pointCount;
                 for (int j = 0; j < pointCount; j++)
                 {
-                    Vector2 currentPoint = points[j];
+                    Vector2 currentPoint = points.Items[j];
 
                     _shadowVertices.Add(new VertexShadow(prevPoint, currentPoint, new Vector2(0.0f, 0.0f)));
                     _shadowVertices.Add(new VertexShadow(prevPoint, currentPoint, new Vector2(1.0f, 0.0f)));
@@ -201,7 +201,7 @@ namespace Penumbra.Graphics.Renderers
 
                 int indexCount = hull.Indices.Count;
                 for (int j = 0; j < indexCount; j++)
-                    _hullIndices.Add(hull.Indices[j] + hullIndexOffset);
+                    _hullIndices.Add(hull.Indices.Items[j] + hullIndexOffset);
                 hullIndexOffset += pointCount;
             }
 

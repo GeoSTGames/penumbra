@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace Penumbra.Utilities
@@ -13,7 +14,7 @@ namespace Penumbra.Utilities
         private const int DefaultCapacity = 4;
         private static readonly T[] EmptyArray = new T[0];
 
-        public T[] Items { get; private set; }
+        public T[] Items;
 
         public static implicit operator T[](FastList<T> collection) => collection.Items;
 
@@ -67,11 +68,12 @@ namespace Penumbra.Utilities
 
         #region IList<T> Members
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Add(T item)
         {
-            if (Count == Items.Length)
-                EnsureCapacity(Count + 1);
-            Items[Count++] = item;
+            if (CountInternal == Items.Length)
+                EnsureCapacity(CountInternal + 1);
+            Items[CountInternal++] = item;
         }
 
         public void IncreaseCapacity(int index)
@@ -92,13 +94,13 @@ namespace Penumbra.Utilities
                 return false;
             }
             EqualityComparer<T> comparer = EqualityComparer<T>.Default;
-            for (int i = 0; i < Count; i++)
+            for (int i = 0; i < CountInternal; i++)
                 if (comparer.Equals(Items[i], item))
                     return true;
             return false;
         }
 
-        public void CopyTo(T[] array, int arrayIndex) => Array.Copy(Items, 0, array, arrayIndex, Count);
+        public void CopyTo(T[] array, int arrayIndex) => Array.Copy(Items, 0, array, arrayIndex, CountInternal);
 
         public int IndexOf(T item) => Array.IndexOf(Items, item, 0, Count);
 
@@ -135,11 +137,18 @@ namespace Penumbra.Utilities
 
         IEnumerator IEnumerable.GetEnumerator() => new Enumerator(this);
 
-        public int Count { get; private set; }
+        public int Count {
+            get => CountInternal; 
+            private set => CountInternal = value;
+        }
+        public int CountInternal;
 
         public T this[int index]
         {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get { return Items[index]; }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             set { Items[index] = value; }
         }
 
@@ -161,6 +170,7 @@ namespace Penumbra.Utilities
         public void CopyTo(int index, T[] array, int arrayIndex, int count) =>
             Array.Copy(Items, index, array, arrayIndex, count);
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private void EnsureCapacity(int min)
         {
             if (Items.Length < min)

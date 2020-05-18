@@ -71,13 +71,13 @@ namespace Penumbra
         /// Gets or sets if the hull is enabled and participates in shadow casting.
         /// Shadows are only cast from enabled hulls.
         /// </summary>
-        public bool Enabled { get; set; } = true;
+        public bool Enabled = true;
 
         /// <summary>
         /// Gets if the hull forms a valid polygon and participates in shadow casting. See
         /// Points property for rules of a valid polygon.
         /// </summary>
-        public bool Valid { get; private set; }
+        public bool Valid;
 
         private Vector2 _position;
         /// <summary>
@@ -210,7 +210,7 @@ namespace Penumbra
             int pointCount = LocalPoints.Count;
             for (int i = 0; i < pointCount; i++)
             {
-                Vector2 originalPos = LocalPoints[i];
+                Vector2 originalPos = LocalPoints.Items[i];
                 Vector2.Transform(ref originalPos, ref LocalToWorld, out Vector2 transformedPos);
                 WorldPoints.Add(transformedPos);
             }

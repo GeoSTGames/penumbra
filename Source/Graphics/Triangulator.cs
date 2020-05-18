@@ -100,16 +100,16 @@ namespace Penumbra.Graphics
 
         private static bool Snip(Polygon contour, int u, int v, int w, int n, int* indices)
         {
-            Vector2 a = contour[indices[u]];
-            Vector2 b = contour[indices[v]];
-            Vector2 c = contour[indices[w]];
+            Vector2 a = contour.Items[indices[u]];
+            Vector2 b = contour.Items[indices[v]];
+            Vector2 c = contour.Items[indices[w]];
 
             if (Epsilon > (b.X - a.X)*(c.Y - a.Y) - (b.Y - a.Y)*(c.X - a.X)) return false;
 
             for (int i = 0; i < n; i++)
             {
                 if (i == u || i == v || i == w) continue;
-                Vector2 p = contour[indices[i]];
+                Vector2 p = contour.Items[indices[i]];
                 if (InsideTriangle(a, b, c, p)) return false;
             }
 
