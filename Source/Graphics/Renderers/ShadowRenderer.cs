@@ -43,6 +43,11 @@ namespace Penumbra.Graphics.Renderers
         private DepthStencilState _dsOccludedShadow;
         private DepthStencilState _dsOccludedHull;
 
+        public void ClearLightVaos()
+        {
+            _lightsVaos.Clear();
+        }
+
         public void Load(PenumbraEngine engine, Effect fxShadow, Effect fxHull)
         {
             _engine = engine;

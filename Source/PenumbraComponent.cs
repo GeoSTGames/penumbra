@@ -153,6 +153,11 @@ namespace Penumbra
             }
         }
 
+        public void ClearLightVaos()
+        {
+            _engine.ClearLightsVaos();
+        }
+
         /// <inheritdoc />
         protected override void UnloadContent()
         {

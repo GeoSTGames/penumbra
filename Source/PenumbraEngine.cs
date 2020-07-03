@@ -98,6 +98,11 @@ namespace Penumbra
             Device.SetRenderTargets(Textures.DiffuseMapBindings);
         }
 
+        public void ClearLightsVaos()
+        {
+            ShadowRenderer.ClearLightVaos();
+        }
+
         public void Render()
         {
             // Update hulls internal data structures.
